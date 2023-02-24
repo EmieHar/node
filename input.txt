@@ -1,0 +1,11 @@
+DEBUT DU TEXTE
+Ce fichier texte montre que node.js est asynchrone . 
+Ce fichier texte montre que node.js est asynchrone . 
+Ce fichier texte montre que node.js est asynchrone . 
+Ce fichier texte montre que node.js est asynchrone . 
+Ce fichier texte montre que node.js est asynchrone . 
+Ce fichier texte montre que node.js est asynchrone . 
+Ce fichier texte montre que node.js est asynchrone . 
+Ce fichier texte montre que node.js est asynchrone . 
+Ce fichier texte montre que node.js est asynchrone . 
+FIN DU TEXTE

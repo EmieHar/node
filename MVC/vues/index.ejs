@@ -1,0 +1,10 @@
+<%- include ('partials/head.ejs') %>
+
+<%- include ('partials/menu.ejs') %>
+
+    <h1>Index</h1>
+   <% if ( locals.message ) { %>
+    <h2><%= message %></h2>
+   <% } %>
+
+   <%- include ('partials/footer.ejs') %>

@@ -1,0 +1,30 @@
+
+<html lang="en">
+<head>
+    <%- include ('partials/head.ejs') %>
+</head>
+
+<% if (locals.message) { %>
+    <%= message %>
+<% } %>
+<body class="container">
+
+<header>
+</header>
+<main>
+    <div class="jumbotron">
+
+        <h1>AFPA 2023</h1>
+        <form action="/signup" method="post">
+            <input type="text" name="id" />
+            <input type="password" name="password" />
+            <input type="submit" value="login" />
+        </form>
+    </div>
+</main>
+<footer>
+    <%- include ('partials/footer.ejs') %>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,3 @@
+DEBUT DU TEXTE
+Mon deuxième fichier
+FIN DU TEXTE
