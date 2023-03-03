@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/axios@0.20.0/dist/axios.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <input id="email">
+
+    <input id="password">
+    
+    <button id="btn">go</button>
+
+    <button id="test">test</button>
+
+    <button id="deco">deconnecte</button>
+   
+   <script>
+   
+   document.getElementById("btn").addEventListener("click", login)
+
+    function login() { 
+            let email = document.getElementById("email").value 
+            let password = document.getElementById("password").value 
+            axios.post("http://localhost:8082/user/login", { email:email, password: password })
+                .then( response => {
+                    console.log(response.data)
+                    localStorage.setItem('token',response.data)
+                    // je reçois le token , 3 partie séparées par des points.
+                    // je decoupe ces parties pour obtenir la 2eme qui est la paylod c.a.d les infos user 
+                    // données par node.
+                    const payload = response.data.split('.')[1]
+                    // paylod est cette 3eme paritie encodé en base64 
+                    const infos = JSON.parse(window.atob(payload))
+                    console.log("infos:",infos) 
+                })
+    }
+    
+    document.getElementById("test").addEventListener("click", test)
+
+    function test() {
+        var tokenFromLocalStorage = localStorage.getItem('token')
+        var config = {}
+        config.headers = {"Authorization": 'Bearer ' + tokenFromLocalStorage }
+     
+        console.log(config)
+        axios.get("http://localhost:8082/api/orders", config )
+                .then( response => {
+                    console.log(response.data)
+                   
+                })
+    }
+
+
+    document.getElementById("deco").addEventListener("click", deconnecte)
+
+    function deconnecte() {
+        window.localStorage.removeItem('token'); 
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+</body>
+</html>

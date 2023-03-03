@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "jest": "^29.4.3",
+    "mongoose": "^7.0.0"
+  }
+}
