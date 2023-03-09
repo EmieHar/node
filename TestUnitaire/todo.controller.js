@@ -4,4 +4,4 @@ const createTodo = (req,res)=>{
     todoModel.create(req.body)
 }
 
-module.exports = createTodo
+module.exports = { createTodo }

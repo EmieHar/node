@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket 1</title>
+</head>
+<body>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+        <input id="input">
+        <button>Envoyer</button>
+    </form>
+
+    <h2 id="code">
+
+    </h2>
+    <button id="couleur">Changer couleur</button>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let socket = io();
+
+        let form = document.getElementById('form');
+        let input = document.getElementById('input');
+
+        let couleur = document.getElementById('couleur');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            if(input.value){
+                socket.emit('chat message', input.value);
+                input.value='';
+            }
+        });
+
+        socket.on('reponse chat message', function(msg) {
+            let item = document.createElement('li');
+            item.textContent = msg;
+            messages.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+        
+        couleur.addEventListener('click', function(e) {
+            socket.emit('changer couleur fond');
+        });
+
+        socket.on('changement de couleur', function(color) {
+            document.body.style.backgroundColor ="#" + color;
+            let text = document.querySelector('#code');
+            text.innerText = "#" + color;
+           
+        });
+    </script>
+</body>
+</html>

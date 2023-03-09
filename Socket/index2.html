@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Socket 2</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: black;
+        }
+
+        /* .pages{
+        
+        } */
+
+        .chatPage {
+            display: none;
+            color: black;
+        }
+
+        .loginPage {
+            color: white;
+
+        }
+        span{
+            color:brown;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <ul class="pages">
+
+        <div id="bienvenue"></div>
+
+        <li class="chatPage">
+            <div class="chatArea">
+                <ul class="messages"></ul>
+            </div>
+            <input class="inputMessage" placeholder="Votre Message ..." />
+            <button id="envoyer">Envoyer</button>
+        </li>
+
+        <li class="loginPage">
+            <div class="form">
+                <h3 class="title">Qui es-tu ?</h3>
+                <input class="usernameInput" type="text" maxlength="14" />
+                <button id="valider">valider</button>
+            </div>
+        </li>
+        <div id="enCours"></div>
+    </ul>
+
+
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        let socket = io();
+
+        let valider = document.getElementById("valider");
+        let envoyer = document.getElementById("envoyer");
+
+        let inputMessage = document.getElementsByClassName('inputMessage')[0];
+        let login = document.getElementsByClassName('loginPage')[0];
+        let chat = document.getElementsByClassName('chatPage')[0];
+        let ul = document.getElementsByClassName('messages')[0];
+
+        let bienvenue = document.getElementById('bienvenue');
+
+        valider.addEventListener('click', function (e) {
+     
+            // getElementsByClassName renvoie un tableau!
+            let input = document.getElementsByClassName('usernameInput')[0];
+
+            if (input.value) {
+                socket.username = input.value;
+                document.body.style.backgroundColor = "white";
+                login.style.display = "none";
+                chat.style.display = "block";
+
+                let item = document.createElement('h2');
+                item.textContent = "bienvenue " + socket.username;
+                bienvenue.appendChild(item);
+                window.scrollTo(0, document.body.scrollHeight);
+            }
+        });
+
+       inputMessage.addEventListener('keypress', function(e) {
+                socket.emit('message en cours', socket.username);
+        });
+
+        socket.on('reponse message en cours', function(nom){
+            document.getElementById('enCours').innerHTML = "<p>"+ nom + " est en train d'écrire</p>";
+        });
+
+        envoyer.addEventListener('click', function(e) {
+            if( inputMessage.value){
+                socket.emit('chat message', inputMessage.value, socket.username);
+                inputMessage.value='';
+            }
+        });
+
+
+        socket.on('reponse chat message', function(msg, nom) {
+            document.getElementById('enCours').innerHTML = " ";
+            let item = document.createElement('li');
+            item.innerHTML = "<p><span>" + nom + "</span>: "+ msg + "</p>";
+            ul.appendChild(item);
+            window.scrollTo(0, document.body.scrollHeight);
+        });
+    </script>
+</body>
+
+</html>

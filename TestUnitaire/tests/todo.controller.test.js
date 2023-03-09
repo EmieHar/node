@@ -1,8 +1,11 @@
-const todoController = require('../todo.controller.js')
+const {createTodo} = require('../todo.controller.js')
+const TodoModel = require('../models/todo.js')
 
-describe('vérification todoController', () => {
-    it('devrait avoir createTodo', () => {
-        expect(todoController.createTodo).typeOf('function');
+TodoModel.create = jest.fn()
+
+describe('verifications todoController',() => {
+    it("devrait avoir createTodo",() => {
+        expect(typeof createTodo).toBe("function")
     })
-    })
+})
     
