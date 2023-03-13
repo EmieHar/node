@@ -4,6 +4,7 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
 
+
 router.use(session({
     secret: 'une phrase pour hash',
     resave: false,
@@ -71,6 +72,7 @@ router.post('/signin', (req, res)=>{
 
 router.get('/index', (req, res) => res.render('index', {session: req.session}));
 router.get('/chat', (req,res) => res.render('chat', {session: req.session}));
+
 
 
 module.exports = router;
