@@ -32,7 +32,9 @@ const chatSchema = new mongoose.Schema({
     required: true
   }
 });
+
 // Hash le mot de passe avant l'enregistrement
+
 
 const Chat = mongoose.model('Chat', chatSchema);
 

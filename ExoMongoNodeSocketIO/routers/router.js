@@ -6,6 +6,7 @@ const session = require('express-session');
 const MemoryStore = require('memorystore')(session);
 const memoryStore = new MemoryStore();
 
+
 router.use(session({
     store: memoryStore,
     secret: 'une phrase pour hash',
@@ -76,6 +77,7 @@ router.post('/signin', (req, res)=>{
 
 router.get('/index', (req, res) => res.render('index', {session: req.session}));
 router.get('/chat', (req,res) => res.render('chat', {session: req.session}));
+
 
 
 module.exports = router;
