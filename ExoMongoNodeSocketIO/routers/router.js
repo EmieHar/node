@@ -3,11 +3,15 @@ const router = new express.Router();
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const session = require('express-session');
+const MemoryStore = require('memorystore')(session);
+const memoryStore = new MemoryStore();
 
 router.use(session({
+    store: memoryStore,
     secret: 'une phrase pour hash',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie:{maxAge:246060*1000}
 }))
 
 router.get('/', (req, res) => res.render('signup'));
@@ -50,7 +54,8 @@ router.post('/signin', (req, res)=>{
                                {
                                 console.log("email et mot de passe valides");
                                 
-                                req.session.id = user.id;
+                                req.session.idUser = user._id;
+                                console.log(user._id);
                                 req.session.nom = user.nom;
                                 req.session.prenom = user.prenom;
 

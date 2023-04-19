@@ -17,7 +17,7 @@ MongoClient.connect('mongodb://localhost:27017/', {family:4}, function(err,db){
                    db.close();
            })
 
-        mydb1.collection('users').find({}, {projection: {_id:0 , firstname: 1}}).toArray(function(err,docs){console.log(docs)});
+        mydb1.collection('users').find({}, {projection: {_id:0 , firstname: 1}}).toArray(function(docs){console.log(docs)});
            
         mydb1.collection('users').find({ firstname: { $in: ['jak','pol'] }}).toArray(function(err,docs){console.log(docs)});
 

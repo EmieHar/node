@@ -26,14 +26,17 @@
             color: white;
 
         }
-        span{
-            color:brown;
+
+        span {
+            color: brown;
             font-weight: bold;
         }
     </style>
 </head>
 
 <body>
+
+    <% if ( locals.session ) { %>
     <ul class="pages">
 
         <div id="bienvenue"></div>
@@ -43,6 +46,9 @@
                 <ul class="messages"></ul>
             </div>
             <input class="inputMessage" placeholder="Votre Message ..." />
+            <input type="hidden" id="idUser" value="<%= session.idUser %>">
+            <input type="hidden" id="nom" value="<%= session.nom %>">
+            <input type="hidden" id="prenom" value="<%= session.prenom %>">
             <button id="envoyer">Envoyer</button>
         </li>
 
@@ -55,6 +61,7 @@
         </li>
         <div id="enCours"></div>
     </ul>
+    <% } %>
 
 
 
@@ -73,7 +80,7 @@
         let bienvenue = document.getElementById('bienvenue');
 
         valider.addEventListener('click', function (e) {
-     
+
             // getElementsByClassName renvoie un tableau!
             let input = document.getElementsByClassName('usernameInput')[0];
 
@@ -90,30 +97,42 @@
             }
         });
 
-       inputMessage.addEventListener('keypress', function(e) {
-                socket.emit('message en cours', socket.username);
+        inputMessage.addEventListener('keypress', function (e) {
+            socket.emit('message en cours', socket.username);
         });
 
-        socket.on('reponse message en cours', function(nom){
-            document.getElementById('enCours').innerHTML = "<p>"+ nom + " est en train d'écrire</p>";
+        socket.on('reponse message en cours', function (nom) {
+            document.getElementById('enCours').innerHTML = "<p>" + nom + " est en train d'écrire</p>";
         });
 
-        envoyer.addEventListener('click', function(e) {
-            if( inputMessage.value){
+        envoyer.addEventListener('click', function (e) {
+            if (inputMessage.value) {
+                let inputId = document.getElementById('idUser');
+                let inputNom = document.getElementById('nom');
+                let inputPrenom = document.getElementById('prenom');
 
-                socket.emit('chat message', inputMessage.value, socket.username);
-                socket.emit('enregistrer chat', inputMessage.value, socket.username);
-                inputMessage.value='';
+                let message = inputMessage.value;
+                let username = socket.username;
+                let id = inputId.value;
+                let nom = inputNom.value;
+                let prenom = inputPrenom.value;
+
+                socket.emit('nouveau message', {idUser: id, message: message, username: username, nom: nom, prenom: prenom  });
+                socket.emit('enregistrer chat', { idUser: id, message: message, username: username, nom: nom, prenom: prenom });
+                message = '';
             }
         });
 
 
-        socket.on('reponse chat message', function(msg, nom) {
+        socket.on('reponse chat', function (obj, couleur) {
+            console.log(couleur);
             document.getElementById('enCours').innerHTML = " ";
             let item = document.createElement('li');
-            item.innerHTML = "<p><span>" + nom + "</span>: "+ msg + "</p>";
+            item.innerHTML = "<p><span>" + obj.username + "</span>: " + obj.message + "</p>";
             ul.appendChild(item);
             window.scrollTo(0, document.body.scrollHeight);
+            
+            
         });
     </script>
 </body>
